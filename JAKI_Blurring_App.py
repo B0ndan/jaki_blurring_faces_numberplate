@@ -13,8 +13,8 @@ import os
 def load_model(model_path):
     cfg = get_cfg()
     # add model-specific configurations here if needed
-    cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
-    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml")
+    cfg.merge_from_file(model_zoo.get_config_file("faster_rcnn_R_50_FPN_3x.yaml"))
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("faster_rcnn_R_50_FPN_3x.yaml")
     #cfg.merge_from_file("C:/Users/bonda/OneDrive/Documents/Application After Bachelor/JSC/PROJECT/Project Code/detectron2_repo/configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml")
     #cfg.MODEL.WEIGHTS = model_path
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # Set a threshold
@@ -28,7 +28,7 @@ def process_and_blur_image(image, predictor):
 
     outputs = predictor(image_np)
     for bbox, cls in zip(outputs["instances"].pred_boxes, outputs["instances"].pred_classes):
-        if cls == 0 or cls == 1:  # Assuming 0 and 1 are the relevant classes
+        if cls == 0 or cls == 1:  
             x1, y1, x2, y2 = bbox.tolist()
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
             region = image_np[y1:y2, x1:x2]
@@ -40,7 +40,6 @@ def process_and_blur_image(image, predictor):
 
 # Load the model
 model_path = "detectron2_repo/300_JAKI_FacePlate_Model.pth"
-#model_path = "JAKI_FacePlate_Model_1.pth"
 predictor = load_model(model_path)
 
 # Streamlit UI
